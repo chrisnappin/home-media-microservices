@@ -5,4 +5,6 @@ Intended to provide an example of various recent microservice platforms and fram
 
 ## Subprojects
 
-* [web-front-end](web-front-end) A simple web front end built using Play 2.5, Scala 2.12
+| Name | Description | Language | Framework |
+|:----:|:-----------:|:--------:|:---------:|
+|[web-front-end](web-front-end) A simple web front end|Scala 2.11 ![Scala](docs/scala.png)|Play 2.5 ![Play](docs/play.png)|
