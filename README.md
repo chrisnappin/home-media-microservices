@@ -7,4 +7,4 @@ Intended to provide an example of various recent microservice platforms and fram
 
 | Name | Description | Language | Framework |
 |:----:|:-----------:|:--------:|:---------:|
-|[web-front-end](web-front-end)| A simple web front end|<div>![Scala](docs/scala.png) <span style="height:50px;vertical-align:middle"> Scala 2.11</span></div>|<div>![Play](docs/play.png) <span style="height:26px;vertical-align:middle"Play 2.5</span></div>|
+|[web-front-end](web-front-end)| A simple web front end|![Scala](docs/scala.png)|![Play](docs/play.png)|
