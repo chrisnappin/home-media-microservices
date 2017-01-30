@@ -1,14 +1,14 @@
 name := """web-front-end"""
 organization := "com.nappin.homemedia.web"
 
-version := "1.0-SNAPSHOT"
+version := "0.1-SNAPSHOT"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.11.7"
 
 libraryDependencies += filters
-libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.1" % Test
+libraryDependencies += specs2 % Test
 
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "com.nappin.homemedia.web.controllers._"
