@@ -1,9 +1,9 @@
 package controllers
 
-import play.api.test._
+import play.api.test.{FakeRequest, PlaySpecification, WithApplication}
 
 /**
- * Add your spec here.
+ * Tests the <code>HomeController</code> class.
  */
 class HomeControllerSpec extends PlaySpecification {
 
@@ -18,7 +18,7 @@ class HomeControllerSpec extends PlaySpecification {
       contentAsString(home) must contain("Welcome to Play")
     }
 
-    "render the index page from the application" in new WithApplication() {
+    "render the index page from the application" in new WithApplication {
       val controller = app.injector.instanceOf[HomeController]
       val home = controller.index().apply(FakeRequest())
 
@@ -27,7 +27,8 @@ class HomeControllerSpec extends PlaySpecification {
       contentAsString(home) must contain("Welcome to Play")
     }
 
-    "render the index page from the router" in new WithApplication() {
+    // TODO: move this to an integration test...
+    "render the index page from the router" in new WithApplication {
       // Need to specify Host header to get through AllowedHostsFilter
       val request = FakeRequest(GET, "/").withHeaders("Host" -> "localhost")
       val home = route(app, request).get
