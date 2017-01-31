@@ -1,0 +1,10 @@
+@import model.Programme
+
+@(programmes: Seq[Programme])
+
+@main("Programme Listing") {
+    <h1>Programme Listing</h1>
+    @for(programme <- programmes) {
+        <p>@programme.name</p>
+    }
+}

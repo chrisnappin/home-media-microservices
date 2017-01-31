@@ -1,11 +1,12 @@
 package controllers
 
-import play.api.test.{FakeRequest, PlaySpecification, WithApplication}
+import org.specs2.mock.Mockito
+import play.api.test.{FakeRequest, PlaySpecification}
 
 /**
  * Tests the <code>HomeController</code> class.
  */
-class HomeControllerSpec extends PlaySpecification {
+class HomeControllerSpec extends PlaySpecification with Mockito {
 
   "HomeController GET" should {
 
@@ -15,27 +16,19 @@ class HomeControllerSpec extends PlaySpecification {
 
       status(home) must be equalTo OK
       contentType(home) must be equalTo Some("text/html")
-      contentAsString(home) must contain("Welcome to Play")
+      contentAsString(home) must contain("Welcome to the Home Media System")
     }
 
-    "render the index page from the application" in new WithApplication {
-      val controller = app.injector.instanceOf[HomeController]
-      val home = controller.index().apply(FakeRequest())
-
-      status(home) must be equalTo OK
-      contentType(home) must be equalTo Some("text/html")
-      contentAsString(home) must contain("Welcome to Play")
-    }
-
-    // TODO: move this to an integration test...
-    "render the index page from the router" in new WithApplication {
+    // TODO: move this to an integration test, either with real Router (and all deps mocked out)
+    // or a partial router with just routes for this controller...
+    /*"render the index page from the router" in new WithApplication {
       // Need to specify Host header to get through AllowedHostsFilter
       val request = FakeRequest(GET, "/").withHeaders("Host" -> "localhost")
       val home = route(app, request).get
 
       status(home) must be equalTo OK
       contentType(home) must be equalTo Some("text/html")
-      contentAsString(home) must contain("Welcome to Play")
-    }
+      contentAsString(home) must contain("Welcome to the Home Media System")
+    }*/
   }
 }
