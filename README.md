@@ -5,6 +5,7 @@ Intended to provide an example of various recent microservice platforms and fram
 
 ## Subprojects
 
-| Name | Description | Language | Framework |
-|:----:|:-----------:|:--------:|:---------:|
-|[web-front-end](web-front-end)| A simple web front end|![Scala](docs/scala.png)|![Play](docs/play.png)|
+| Name                                   | Description             | Language               | Framework                          |
+|:--------------------------------------:|:-----------------------:|:----------------------:|:----------------------------------:|
+|[web-front-end](web-front-end)          | A simple web front end  |![Scala](docs/scala.png)|![Play](docs/play.png)              |
+|[tvlistings-service](tvlistings-service)| TV Listings microservice|![Java](docs/java.png)  |![Spring Boot](docs/spring-boot.png)|
