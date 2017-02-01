@@ -1,0 +1,26 @@
+<configuration scan="true" scanPeriod="5 seconds" packagingData="true">
+
+    <!-- development logger is only to the console -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date{HH:mm:ss.SSS} %-5level %logger{10} %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- the application log levels -->
+    <logger name="com.nappin.homemedia.tvlisting" level="debug"/>
+
+    <!-- default log levels for application framework/libraries/embedded runtime -->
+    <logger name="javax.activation" level="warn"/>
+    <logger name="javax.management" level="warn"/>
+    <logger name="org.apache.catalina" level="warn"/>
+    <logger name="org.apache.coyote" level="warn"/>
+    <logger name="org.apache.tomcat" level="warn"/>
+    <logger name="org.hibernate" level="warn"/>
+    <logger name="org.jboss" level="warn"/>
+    <logger name="org.springframework" level="warn"/>
+
+    <root level="ALL">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>
