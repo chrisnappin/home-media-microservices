@@ -1,0 +1,39 @@
+domain model
+------------
+
+User (by id, separate microservice)
+
+Channel
+
+Series
+
+Programme
+
+Favourite Channel
+
+Favourite Series
+
+
+
+to run (in dev mode, with auto-reloading and auto-detecting main class)
+------
+run: gradle bootRun
+browse to: http://localhost:8080
+
+
+to run (in prod mode, all dependencies and tomcat embedded in jar)
+------
+run: java -jar build\libs\spring-boot-example-0.0.1-SNAPSHOT.jar --spring.profiles.active=<dev or prod>
+
+(loads application-<profile>.properties)
+
+browse to: http://localhost:8080
+
+
+Manual Testing
+--------------
+to run proper curl on Windows, have to use "curl.exe"
+
+   - use "curl.exe -v http://localhost:8080/<endpoint>" to see raw HTTP headers and JSON
+        -X <http method in capitals>
+        -v verbose, shows headers etc

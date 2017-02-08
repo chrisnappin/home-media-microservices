@@ -19,10 +19,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
  * REST controller that handles requests for programme listings.
  */
 @RestController()
-public class ProgrammesController {
+public class ProgrammeController {
 
     /** The logger. */
-    private static final Logger logger = LoggerFactory.getLogger(ProgrammesController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProgrammeController.class);
 
     @RequestMapping(value="/programme", method=GET, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> programmeListing() {
