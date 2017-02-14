@@ -6,13 +6,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 /**
  * Tests the <code>FavouriteController</code> class.
@@ -62,9 +60,7 @@ public class FavouriteControllerTest {
      */
     @Test
     public void getFavouriteChannelsUserUnknown() throws Exception {
-        tester.isNotFound(mvc,
-                get("/favourite/channel/{userId}", 1236L),
-                "{\"message\":\"User 1236 is unknown\"}");
+        tester.isNotFound(mvc, get("/favourite/channel/{userId}", 1236L));
     }
 
     /**
@@ -73,7 +69,7 @@ public class FavouriteControllerTest {
      */
     @Test
     public void getFavouriteChannelsMissingArgument() throws Exception {
-        tester.isNotFoundEmpty(mvc, get("/favourite/channel"));
+        tester.isNotFound(mvc, get("/favourite/channel"));
     }
 
     /**
@@ -82,7 +78,7 @@ public class FavouriteControllerTest {
      */
     @Test
     public void getFavouriteChannelsInvalidArgument() throws Exception {
-        tester.isBadRequestEmpty(mvc, get("/favourite/channel/{userId}", "wibble"));
+        tester.isBadRequest(mvc, get("/favourite/channel/{userId}", "wibble"));
     }
 
     /**
@@ -105,10 +101,48 @@ public class FavouriteControllerTest {
      */
     @Test
     public void getFavouriteChannelsWrongAccept() throws Exception {
-        tester.isNotAcceptableEmpty(mvc, get("/favourite/channel/{userId}", "1234"));
+        tester.isNotAcceptable(mvc, get("/favourite/channel/{userId}", "1234"));
     }
 
     // TODO: internal server error
 
-    // TODO: all tests for addFavouriteChannel, removeFavouriteChannel
+    /**
+     * Tests the <code>getFavouriteChannels</code> method, when successful.
+     * @throws Exception    Test failed
+     */
+    @Test
+    public void addFavouriteChannelsSuccessful() throws Exception {
+        tester.isCreated(mvc, put("/favourite/channel/{userId}?channelId={channelId}", 1234L, 101L));
+    }
+
+    /**
+     * Tests the <code>getFavouriteChannels</code> method, when the specified user is unknown.
+     * @throws Exception    Test failed
+     */
+    @Test
+    public void addFavouriteChannelsUserUnknown() throws Exception {
+        tester.isNotFound(mvc, put("/favourite/channel/{userId}?channelId={channelId}", 1236L, 101L));
+    }
+
+    /**
+     * Tests the <code>getFavouriteChannels</code> method, when the user and channel isn't specified.
+     * @throws Exception    Test failed
+     */
+    @Test
+    public void addFavouriteChannelsMissingArgument() throws Exception {
+        tester.isNotFound(mvc, put("/favourite/channel"));
+    }
+
+    /**
+     * Tests the <code>getFavouriteChannels</code> method, when the user isn't valid.
+     * @throws Exception    Test failed
+     */
+    @Test
+    public void addFavouriteChannelsInvalidArgument() throws Exception {
+        tester.isBadRequest(mvc, put("/favourite/channel/{userId}?channelId={channelId}", "wibble", "abc"));
+    }
+
+    // TODO: internal server error
+
+    // TODO: all tests for removeFavouriteChannel
 }

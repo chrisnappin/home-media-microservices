@@ -50,27 +50,12 @@ public class RESTControllerTester {
     }
 
     /**
-     * Tests that the specified request was not found (404), and contained the expected JSON result.
-     * @param mvc               The MockMvc to use
-     * @param requestBuilder    The request to use
-     * @param expectedResponse  The expected response to check for
-     * @throws Exception    Test failed
-     */
-    public void isNotFound(MockMvc mvc, MockHttpServletRequestBuilder requestBuilder,
-                             String expectedResponse) throws Exception {
-        mvc.perform(requestBuilder.accept(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isNotFound())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().string(expectedResponse));
-    }
-
-    /**
      * Tests that the specified request was not found (404), and did not contain any result.
      * @param mvc               The MockMvc to use
      * @param requestBuilder    The request to use
      * @throws Exception    Test failed
      */
-    public void isNotFoundEmpty(MockMvc mvc, MockHttpServletRequestBuilder requestBuilder) throws Exception {
+    public void isNotFound(MockMvc mvc, MockHttpServletRequestBuilder requestBuilder) throws Exception {
         mvc.perform(requestBuilder)
                 .andExpect(status().isNotFound())
                 .andExpect(content().string(""));
@@ -82,7 +67,7 @@ public class RESTControllerTester {
      * @param requestBuilder    The request to use
      * @throws Exception    Test failed
      */
-    public void isBadRequestEmpty(MockMvc mvc, MockHttpServletRequestBuilder requestBuilder) throws Exception {
+    public void isBadRequest(MockMvc mvc, MockHttpServletRequestBuilder requestBuilder) throws Exception {
         mvc.perform(requestBuilder)
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(""));
@@ -95,9 +80,21 @@ public class RESTControllerTester {
          * @param requestBuilder    The request to use
          * @throws Exception    Test failed
          */
-    public void isNotAcceptableEmpty(MockMvc mvc, MockHttpServletRequestBuilder requestBuilder) throws Exception {
+    public void isNotAcceptable(MockMvc mvc, MockHttpServletRequestBuilder requestBuilder) throws Exception {
         mvc.perform(requestBuilder.accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isNotAcceptable())
+                .andExpect(content().string(""));
+    }
+
+    /**
+     * Tests that the specified request was created (201), and did not contain any result.
+     * @param mvc               The MockMvc to use
+     * @param requestBuilder    The request to use
+     * @throws Exception    Test failed
+     */
+    public void isCreated(MockMvc mvc, MockHttpServletRequestBuilder requestBuilder) throws Exception {
+        mvc.perform(requestBuilder)
+                .andExpect(status().isCreated())
                 .andExpect(content().string(""));
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,13 +54,14 @@ public class FavouriteController {
                 // simulate user unknown
                 String message = "User " + userId + " is unknown";
                 logger.warn(message);
-                return new ResponseEntity<APIError>(new APIError(message), HttpStatus.NOT_FOUND);
+                return ResponseEntity.notFound().build();
             }
 
-            return new ResponseEntity<List<Channel>>(channels, HttpStatus.OK);
+            return ResponseEntity.ok(channels);
 
         } catch (Throwable ex) {
-            return new ResponseEntity<APIError>(new APIError(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            // TODO: add generic error handling
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new APIError(ex.getMessage()));
         }
     }
 
@@ -69,7 +71,7 @@ public class FavouriteController {
      * @param channelId The channel id
      * @return A created response if successful, or a not found response if user is unknown.
      */
-    @RequestMapping(value="/favourite/channel/{userId}", method=PUT, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value="/favourite/channel/{userId}", method=PUT)
     public ResponseEntity<?> addFavouriteChannel(@PathVariable long userId, @RequestParam long channelId) {
         try {
             logger.debug("In addFavouriteChannel for userId {} and channelId {}", userId, channelId);
@@ -78,16 +80,18 @@ public class FavouriteController {
 
             if (userId == 1234L) {
                 // simulate accepting the add
-                return new ResponseEntity<Void>(HttpStatus.CREATED);
+                // Note: should really have a URI to read this resource
+                return ResponseEntity.created(new URI("http://wibble/test")).build();
 
             } else {
                 // simulate user unknown
                 String message = "User " + userId + " is unknown";
                 logger.warn(message);
-                return new ResponseEntity<APIError>(new APIError(message), HttpStatus.NOT_FOUND);
+                return ResponseEntity.notFound().build();
             }
         } catch (Throwable ex) {
-            return new ResponseEntity<APIError>(new APIError(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            // TODO: add generic error handling
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new APIError(ex.getMessage()));
         }
     }
 
@@ -97,7 +101,7 @@ public class FavouriteController {
      * @param channelId The channel id
      * @return An ok response if successful, or a not found response if user is unknown.
      */
-    @RequestMapping(value="/favourite/channel/{userId}", method=DELETE, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value="/favourite/channel/{userId}", method=DELETE)
     public ResponseEntity<?> removeFavouriteChannel(@PathVariable long userId, @RequestParam long channelId) {
         try {
             logger.debug("In removeFavouriteChannel for userId {} and channelId {}", userId, channelId);
@@ -106,19 +110,20 @@ public class FavouriteController {
 
             if (userId == 1234L) {
                 // simulate accepting the remove, idempotent (if already deleted return OK)
-                return new ResponseEntity<Void>(HttpStatus.OK);
+                return ResponseEntity.ok().build();
 
             } else {
                 // simulate user unknown
                 String message = "User " + userId + " is unknown";
                 logger.warn(message);
-                return new ResponseEntity<APIError>(new APIError(message), HttpStatus.NOT_FOUND);
+                return ResponseEntity.notFound().build();
             }
 
             // TODO: channel unknown etc
 
         } catch (Throwable ex) {
-            return new ResponseEntity<APIError>(new APIError(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            // TODO: add generic error handling
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new APIError(ex.getMessage()));
         }
     }
 }
