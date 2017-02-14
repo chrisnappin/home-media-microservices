@@ -1,7 +1,7 @@
 # home-media-microservices
 Example set of collaborating microservices, built using various languages and technologies.
 
-Intended to provide an example of various recent microservice platforms and frameworks, based very loosely around the concept of a Home Media platform (but grossly over-engineered!). Not intended as usable Home Media software.
+Intended to provide an example of various modern microservice platforms and frameworks, based very loosely around the concept of a Home Media platform (but grossly over-engineered!). Not intended as usable Home Media software.
 
 ## Subprojects
 

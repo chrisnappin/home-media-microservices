@@ -5,7 +5,7 @@ A simple web front end, consuming the various microservices.
 ## Technologies used
 
 | Name                                        | Description            |
-|:-------------------------------------------:|:----------------------:|
+|:--------------------------------------------|:-----------------------|
 |[Scala](https://www.scala-lang.org) 2.11.7   | Programming Language   |
 |[Play](https://www.playframework.com) 2.5.12 | Framework              |
 |[Guice](https://github.com/google/guice) 4.0 | Dependency Injection   |
