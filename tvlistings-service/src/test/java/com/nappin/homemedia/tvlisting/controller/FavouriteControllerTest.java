@@ -1,14 +1,24 @@
 package com.nappin.homemedia.tvlisting.controller;
 
+import com.nappin.homemedia.tvlisting.error.UnknownUserException;
+import com.nappin.homemedia.tvlisting.model.Channel;
+import com.nappin.homemedia.tvlisting.service.FavouriteService;
 import com.nappin.homemedia.tvlisting.test.RESTControllerTester;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willThrow;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
@@ -29,12 +39,20 @@ public class FavouriteControllerTest {
         this.tester = new RESTControllerTester(mvc);
     }
 
+    @MockBean
+    private FavouriteService favouriteService;
+
     /**
      * Tests the <code>getFavouriteChannels</code> method, when successful.
      * @throws Exception    Test failed
      */
     @Test
     public void getFavouriteChannelsSuccessful() throws Exception {
+        List<Channel> mockResult = new ArrayList<>();
+        mockResult.add(new Channel(100L, "Example Channel #1"));
+        mockResult.add(new Channel(101L, "Example Channel #2"));
+        given(favouriteService.getFavouriteChannels(1234L)).willReturn(mockResult);
+
         tester.isSuccessful(mvc,
                 get("/favourite/channel/{userId}", 1234L),
                 "[" +
@@ -49,6 +67,8 @@ public class FavouriteControllerTest {
      */
     @Test
     public void getFavouriteChannelsEmpty() throws Exception {
+        given(favouriteService.getFavouriteChannels(1235L)).willReturn(new ArrayList<Channel>());
+
         tester.isSuccessful(mvc,
                 get("/favourite/channel/{userId}", 1235L),
                 "[]");
@@ -60,6 +80,8 @@ public class FavouriteControllerTest {
      */
     @Test
     public void getFavouriteChannelsUserUnknown() throws Exception {
+        given(favouriteService.getFavouriteChannels(1236L)).willThrow(new UnknownUserException("Oops!"));
+
         tester.isNotFound(mvc, get("/favourite/channel/{userId}", 1236L));
     }
 
@@ -87,6 +109,11 @@ public class FavouriteControllerTest {
      */
     @Test
     public void getFavouriteChannelsMissingAccept() throws Exception {
+        List<Channel> mockResult = new ArrayList<>();
+        mockResult.add(new Channel(100L, "Example Channel #1"));
+        mockResult.add(new Channel(101L, "Example Channel #2"));
+        given(favouriteService.getFavouriteChannels(1234L)).willReturn(mockResult);
+
         // request with missing accept media type still returns a valid response
         tester.isSuccessfulNoAccept(mvc, get("/favourite/channel/{userId}", 1234L),
                 "[" +
@@ -104,10 +131,21 @@ public class FavouriteControllerTest {
         tester.isNotAcceptable(mvc, get("/favourite/channel/{userId}", "1234"));
     }
 
-    // TODO: internal server error
+    /**
+     * Tests the <code>getFavouriteChannels</code> method, when an internal error happens.
+     * @throws Exception    Test failed
+     */
+    @Test
+    public void getFavouriteChannelsError() throws Exception {
+        willThrow(new RuntimeException("Fatal error!")).given(favouriteService).getFavouriteChannels(1234L);
+
+        tester.isInternalServerError(mvc,
+                get("/favourite/channel/{userId}", 1234L),
+                "{\"message\":\"Fatal error!\"}");
+    }
 
     /**
-     * Tests the <code>getFavouriteChannels</code> method, when successful.
+     * Tests the <code>addFavouriteChannels</code> method, when successful.
      * @throws Exception    Test failed
      */
     @Test
@@ -116,25 +154,27 @@ public class FavouriteControllerTest {
     }
 
     /**
-     * Tests the <code>getFavouriteChannels</code> method, when the specified user is unknown.
+     * Tests the <code>addFavouriteChannels</code> method, when the specified user is unknown.
      * @throws Exception    Test failed
      */
     @Test
     public void addFavouriteChannelsUserUnknown() throws Exception {
+        willThrow(new UnknownUserException("Oops")).given(favouriteService).addFavouriteChannel(1236L, 101L);
+
         tester.isNotFound(mvc, put("/favourite/channel/{userId}?channelId={channelId}", 1236L, 101L));
     }
 
     /**
-     * Tests the <code>getFavouriteChannels</code> method, when the user and channel isn't specified.
+     * Tests the <code>addFavouriteChannels</code> method, when the user and channel isn't specified.
      * @throws Exception    Test failed
      */
     @Test
-    public void addFavouriteChannelsMissingArgument() throws Exception {
+    public void addFavouriteChannelsMissingArguments() throws Exception {
         tester.isNotFound(mvc, put("/favourite/channel"));
     }
 
     /**
-     * Tests the <code>getFavouriteChannels</code> method, when the user isn't valid.
+     * Tests the <code>addFavouriteChannels</code> method, when the user and channel aren't valid.
      * @throws Exception    Test failed
      */
     @Test
@@ -142,7 +182,46 @@ public class FavouriteControllerTest {
         tester.isBadRequest(mvc, put("/favourite/channel/{userId}?channelId={channelId}", "wibble", "abc"));
     }
 
-    // TODO: internal server error
+    // TODO: addFavouriteChannels - internal server error
 
-    // TODO: all tests for removeFavouriteChannel
+    /**
+     * Tests the <code>removeFavouriteChannels</code> method, when successful.
+     * @throws Exception    Test failed
+     */
+    @Test
+    public void removeFavouriteChannelsSuccessful() throws Exception {
+        tester.isSuccessfulEmpty(mvc,
+                delete("/favourite/channel/{userId}?channelId={channelId}", 1234L, 101L));
+    }
+
+    /**
+     * Tests the <code>removeFavouriteChannels</code> method, when the specified user is unknown.
+     * @throws Exception    Test failed
+     */
+    @Test
+    public void removeFavouriteChannelsUserUnknown() throws Exception {
+        tester.isNotFound(mvc,
+                delete("/favourite/channel/{userId}?channelId={channelId}", 1236L, 101L));
+    }
+
+    /**
+     * Tests the <code>removeFavouriteChannels</code> method, when the user and channel isn't specified.
+     * @throws Exception    Test failed
+     */
+    @Test
+    public void removeFavouriteChannelsMissingArguments() throws Exception {
+        tester.isNotFound(mvc, delete("/favourite/channel"));
+    }
+
+    /**
+     * Tests the <code>removeFavouriteChannels</code> method, when the user and channel aren't valid.
+     * @throws Exception    Test failed
+     */
+    @Test
+    public void removeFavouriteChannelsInvalidArgument() throws Exception {
+        tester.isBadRequest(mvc,
+                delete("/favourite/channel/{userId}?channelId={channelId}", "wibble", "abc"));
+    }
+
+    // TODO: removeFavouriteChannels - internal server error
 }
