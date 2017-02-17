@@ -182,7 +182,18 @@ public class FavouriteControllerTest {
         tester.isBadRequest(mvc, put("/favourite/channel/{userId}?channelId={channelId}", "wibble", "abc"));
     }
 
-    // TODO: addFavouriteChannels - internal server error
+    /**
+     * Tests the <code>addFavouriteChannels</code> method, when an internal error happens.
+     * @throws Exception    Test failed
+     */
+    @Test
+    public void addFavouriteChannelsError() throws Exception {
+        willThrow(new RuntimeException("Fatal error!")).given(favouriteService).addFavouriteChannel(1236L, 101L);
+
+        tester.isInternalServerError(mvc,
+                put("/favourite/channel/{userId}?channelId={channelId}", 1236L, 101L),
+                "{\"message\":\"Fatal error!\"}");
+    }
 
     /**
      * Tests the <code>removeFavouriteChannels</code> method, when successful.
@@ -200,6 +211,8 @@ public class FavouriteControllerTest {
      */
     @Test
     public void removeFavouriteChannelsUserUnknown() throws Exception {
+        willThrow(new UnknownUserException("Oops")).given(favouriteService).removeFavouriteChannel(1236L, 101L);
+
         tester.isNotFound(mvc,
                 delete("/favourite/channel/{userId}?channelId={channelId}", 1236L, 101L));
     }
@@ -223,5 +236,16 @@ public class FavouriteControllerTest {
                 delete("/favourite/channel/{userId}?channelId={channelId}", "wibble", "abc"));
     }
 
-    // TODO: removeFavouriteChannels - internal server error
+    /**
+     * Tests the <code>aremoveFavouriteChannels</code> method, when an internal error happens.
+     * @throws Exception    Test failed
+     */
+    @Test
+    public void removeFavouriteChannelsError() throws Exception {
+        willThrow(new RuntimeException("Fatal error!")).given(favouriteService).removeFavouriteChannel(1234L, 101L);
+
+        tester.isInternalServerError(mvc,
+                delete("/favourite/channel/{userId}?channelId={channelId}", 1234L, 101L),
+                "{\"message\":\"Fatal error!\"}");
+    }
 }
