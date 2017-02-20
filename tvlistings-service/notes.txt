@@ -37,3 +37,9 @@ to run proper curl on Windows, have to use "curl.exe"
    - use "curl.exe -v http://localhost:8080/<endpoint>" to see raw HTTP headers and JSON
         -X <http method in capitals>
         -v verbose, shows headers etc
+
+Swagger
+-------
+- added Springfox which generates swagger docs from spring code - http://localhost:8080/v2-api-docs
+- added Springfox swagger UI - browse to http://localhost:8080/swagger-ui.html
+- configuration using Spring Java Config @Bean
