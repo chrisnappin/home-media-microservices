@@ -1,17 +1,19 @@
 package com.nappin.homemedia.tvlisting.controller;
 
 import com.nappin.homemedia.tvlisting.model.APIError;
+import com.nappin.homemedia.tvlisting.model.Channel;
 import com.nappin.homemedia.tvlisting.service.FavouriteService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -25,6 +27,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
  */
 @RestController
 @RequestMapping(value="/favourite")
+@Api(description="Favourites Endpoint")
 public class FavouriteController {
 
     /** The logger. */
@@ -40,6 +43,14 @@ public class FavouriteController {
      * @return An ok response with a list of zero or more channels, or a not found response if user is unknown.
      */
     @RequestMapping(value="/channel/{userId}", method=GET, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value="Get all favourite channels", notes="Gets all favourite channels for the specified user")
+    @ApiResponses(value={
+        @ApiResponse(code=200, message="Favourites successfully returned", response=Channel.class, responseContainer="List"),
+        @ApiResponse(code=400, message="userId is invalid", response=Void.class),
+        @ApiResponse(code=404, message="User not known", response=Void.class),
+        @ApiResponse(code=406, message="Unsupported media type", response=Void.class),
+        @ApiResponse(code=500, message="Internal error", response=APIError.class)
+        })
     public ResponseEntity<?> getFavouriteChannels(@PathVariable long userId) {
         logger.debug("In getFavouriteChannels for userId {}", userId);
 
@@ -53,6 +64,15 @@ public class FavouriteController {
      * @return A created response if successful, or a not found response if user is unknown.
      */
     @RequestMapping(value="/channel/{userId}", method=PUT)
+    @ApiOperation(value="Add favourite channel", notes="Adds a favourite channel for the specified user")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiResponses(value={
+            @ApiResponse(code=201, message="Addition successful", response=Void.class),
+            @ApiResponse(code=400, message="userId is invalid", response=Void.class),
+            @ApiResponse(code=404, message="User not known", response=Void.class),
+            @ApiResponse(code=406, message="Unsupported media type", response=Void.class),
+            @ApiResponse(code=500, message="Internal error", response=APIError.class)
+    })
     public ResponseEntity<?> addFavouriteChannel(@PathVariable long userId, @RequestParam long channelId) {
         logger.debug("In addFavouriteChannel for userId {} and channelId {}", userId, channelId);
 
@@ -76,6 +96,14 @@ public class FavouriteController {
      * @return An ok response if successful, or a not found response if user is unknown.
      */
     @RequestMapping(value="/channel/{userId}", method=DELETE)
+    @ApiOperation(value="Remove favourite channel", notes="Removes a favourite channel for the specified user")
+    @ApiResponses(value={
+            @ApiResponse(code=200, message="Removal successful", response=Void.class),
+            @ApiResponse(code=400, message="userId is invalid", response=Void.class),
+            @ApiResponse(code=404, message="User not known", response=Void.class),
+            @ApiResponse(code=406, message="Unsupported media type", response=Void.class),
+            @ApiResponse(code=500, message="Internal error", response=APIError.class)
+    })
     public ResponseEntity<?> removeFavouriteChannel(@PathVariable long userId, @RequestParam long channelId) {
         logger.debug("In removeFavouriteChannel for userId {} and channelId {}", userId, channelId);
 
