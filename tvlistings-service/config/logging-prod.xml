@@ -23,6 +23,7 @@
     <logger name="org.hibernate" level="warn"/>
     <logger name="org.jboss" level="warn"/>
     <logger name="org.springframework" level="warn"/>
+    <logger name="springfox.documentation" level="warn"/>
 
     <root level="ALL">
         <appender-ref ref="FILE" />

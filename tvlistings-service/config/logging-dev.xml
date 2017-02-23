@@ -3,7 +3,7 @@
     <!-- development logger is only to the console -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%date{HH:mm:ss.SSS} %-5level %logger{10} %msg%n</pattern>
+            <pattern>%date{HH:mm:ss.SSS} %-5level %logger %msg%n</pattern>
         </encoder>
     </appender>
 
@@ -19,6 +19,7 @@
     <logger name="org.hibernate" level="warn"/>
     <logger name="org.jboss" level="warn"/>
     <logger name="org.springframework" level="warn"/>
+    <logger name="springfox.documentation" level="info"/>
 
     <root level="ALL">
         <appender-ref ref="STDOUT" />
