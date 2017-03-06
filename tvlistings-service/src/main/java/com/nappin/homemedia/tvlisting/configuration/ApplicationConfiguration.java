@@ -2,6 +2,8 @@ package com.nappin.homemedia.tvlisting.configuration;
 
 import com.nappin.homemedia.tvlisting.service.FavouriteService;
 import com.nappin.homemedia.tvlisting.service.impl.FavouriteServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.metrics.CounterService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -18,9 +20,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class ApplicationConfiguration {
 
+    @Autowired
+    private CounterService counterService;
+
     @Bean
     public FavouriteService favouriteService() {
-        return new FavouriteServiceImpl();
+        return new FavouriteServiceImpl(counterService);
     }
 
     @Bean
