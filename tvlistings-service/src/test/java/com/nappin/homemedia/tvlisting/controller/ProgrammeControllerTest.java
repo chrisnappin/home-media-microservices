@@ -1,7 +1,5 @@
 package com.nappin.homemedia.tvlisting.controller;
 
-import com.nappin.homemedia.tvlisting.error.UnknownUserException;
-import com.nappin.homemedia.tvlisting.model.Channel;
 import com.nappin.homemedia.tvlisting.model.Programme;
 import com.nappin.homemedia.tvlisting.service.ProgrammeService;
 import com.nappin.homemedia.tvlisting.test.RESTControllerTester;
