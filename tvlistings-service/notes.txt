@@ -3,15 +3,19 @@ domain model
 
 User (by id, separate microservice)
 
-Channel
+Channel (id, name, logo etc)
 
-Series
+Series (id, name, details etc)
+(a Series can be scheduled on any number of Channels)
 
-Programme
+Programme (id, time, details etc) has a Series
+(a Programme can be scheduled on any number of Channels)
 
-Favourite Channel
+Listing (date, country) has a set of Channels, each with a set of Programmes
 
-Favourite Series
+Favourite Channel - used to show upcoming programmes on the current day
+
+Favourite Series - used to show upcoming programmes on the next week
 
 
 

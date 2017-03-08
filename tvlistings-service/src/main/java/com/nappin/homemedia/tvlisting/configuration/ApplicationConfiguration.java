@@ -1,7 +1,9 @@
 package com.nappin.homemedia.tvlisting.configuration;
 
 import com.nappin.homemedia.tvlisting.service.FavouriteService;
+import com.nappin.homemedia.tvlisting.service.ProgrammeService;
 import com.nappin.homemedia.tvlisting.service.impl.FavouriteServiceImpl;
+import com.nappin.homemedia.tvlisting.service.impl.ProgrammeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.metrics.CounterService;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +28,11 @@ public class ApplicationConfiguration {
     @Bean
     public FavouriteService favouriteService() {
         return new FavouriteServiceImpl(counterService);
+    }
+
+    @Bean
+    public ProgrammeService programmeService() {
+        return new ProgrammeServiceImpl(counterService);
     }
 
     @Bean

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -51,7 +52,7 @@ public class FavouriteController {
         @ApiResponse(code=406, message="Unsupported media type", response=Void.class),
         @ApiResponse(code=500, message="Internal error", response=APIError.class)
         })
-    public ResponseEntity<?> getFavouriteChannels(@PathVariable long userId) {
+    public ResponseEntity<List<Channel>> getFavouriteChannels(@PathVariable long userId) {
         logger.debug("In getFavouriteChannels for userId {}", userId);
 
         return ResponseEntity.ok(favouriteService.getFavouriteChannels(userId));
@@ -104,7 +105,7 @@ public class FavouriteController {
             @ApiResponse(code=406, message="Unsupported media type", response=Void.class),
             @ApiResponse(code=500, message="Internal error", response=APIError.class)
     })
-    public ResponseEntity<?> removeFavouriteChannel(@PathVariable long userId, @RequestParam long channelId) {
+    public ResponseEntity<Void> removeFavouriteChannel(@PathVariable long userId, @RequestParam long channelId) {
         logger.debug("In removeFavouriteChannel for userId {} and channelId {}", userId, channelId);
 
         favouriteService.removeFavouriteChannel(userId, channelId);
