@@ -14,4 +14,34 @@ public class Programme {
     public String getName() {
         return name;
     }
+
+    /**
+     * Convert the current object to a String representation.
+     * @return The string representation
+     */
+    @Override
+    public String toString() {
+        return new StringBuilder("Programme[")
+                .append(",name='").append(name).append("'")
+                .append(']').toString();
+    }
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+
+        if (!(other instanceof Programme)) {
+            return false;
+        }
+
+        Programme otherProgramme = (Programme) other;
+        // TODO: replace with null safe utility code
+        return this.getName().equals(((Programme) other).getName());
+    }
 }

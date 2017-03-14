@@ -1,5 +1,7 @@
 package com.nappin.homemedia.tvlisting.configuration;
 
+import com.nappin.homemedia.tvlisting.delegate.ProgrammeListingDelegate;
+import com.nappin.homemedia.tvlisting.delegate.tvmaze.TVMazeProgrammeListingDelegate;
 import com.nappin.homemedia.tvlisting.service.FavouriteService;
 import com.nappin.homemedia.tvlisting.service.ProgrammeService;
 import com.nappin.homemedia.tvlisting.service.impl.FavouriteServiceImpl;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.metrics.CounterService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.Contact;
@@ -26,13 +29,23 @@ public class ApplicationConfiguration {
     private CounterService counterService;
 
     @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+
+    @Bean
     public FavouriteService favouriteService() {
         return new FavouriteServiceImpl(counterService);
     }
 
     @Bean
     public ProgrammeService programmeService() {
-        return new ProgrammeServiceImpl(counterService);
+        return new ProgrammeServiceImpl(counterService, programmeListingDelegate());
+    }
+
+    @Bean
+    public ProgrammeListingDelegate programmeListingDelegate() {
+        return new TVMazeProgrammeListingDelegate(restTemplate());
     }
 
     @Bean
