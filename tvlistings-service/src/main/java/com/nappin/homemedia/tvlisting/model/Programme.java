@@ -27,8 +27,9 @@ public class Programme {
     }
 
     /**
-     *
-     * @return
+     * Determines if same as another programme instance, using value equality.
+     * @param other     The other instance to compare with
+     * @return <code>true</code> if equals
      */
     @Override
     public boolean equals(Object other) {
@@ -42,6 +43,16 @@ public class Programme {
 
         Programme otherProgramme = (Programme) other;
         // TODO: replace with null safe utility code
-        return this.getName().equals(((Programme) other).getName());
+        return this.getName().equals(otherProgramme.getName());
+    }
+
+    /**
+     * Calculates a hashCode for this instance.
+     * @return The hash code
+     */
+    @Override
+    public int hashCode() {
+        // TODO: replace with null safe utility code
+        return this.getName().hashCode();
     }
 }
