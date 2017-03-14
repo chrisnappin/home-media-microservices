@@ -1,5 +1,8 @@
 package com.nappin.homemedia.tvlisting.model;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
+
 /**
  * Encapsulates a TV programme.
  */
@@ -42,8 +45,7 @@ public class Programme {
         }
 
         Programme otherProgramme = (Programme) other;
-        // TODO: replace with null safe utility code
-        return this.getName().equals(otherProgramme.getName());
+        return Objects.equal(name, otherProgramme.name);
     }
 
     /**
@@ -52,7 +54,6 @@ public class Programme {
      */
     @Override
     public int hashCode() {
-        // TODO: replace with null safe utility code
-        return this.getName().hashCode();
+        return Objects.hashCode(name);
     }
 }
