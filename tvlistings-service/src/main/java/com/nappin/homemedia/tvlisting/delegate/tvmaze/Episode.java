@@ -8,11 +8,8 @@ public class Episode {
     /** The episode id. */
     private long id;
 
-    /** The date shown on air. */
-    private String airdate;
-
-    /** The time shown on air. */
-    private String airtime;
+    /** The starting date and time the episode is shown on air. */
+    private String airstamp;
 
     /** The episode running time, in minutes. */
     private int runtime;
@@ -37,35 +34,19 @@ public class Episode {
     }
 
     /**
-     * Get the date shown on air.
-     * @return The date
+     * Get the starting date and time the episode is shown on air.
+     * @return The starting timestamp, in ISO 8601 format
      */
-    public String getAirdate() {
-        return airdate;
+    public String getAirstamp() {
+        return airstamp;
     }
 
     /**
-     * Set the date shown on air.
-     * @param airdate   The date
+     * Set the starting date and time the episode is shown on air.
+     * @param airstamp   The starting timestamp, in ISO 8601 format
      */
-    public void setAirdate(String airdate) {
-        this.airdate = airdate;
-    }
-
-    /**
-     * Get the time shown on air.
-     * @return The time
-     */
-    public String getAirtime() {
-        return airtime;
-    }
-
-    /**
-     * Set the time shown on air.
-     * @param airtime   The time
-     */
-    public void setAirtime(String airtime) {
-        this.airtime = airtime;
+    public void setAirstamp(String airstamp) {
+        this.airstamp = airstamp;
     }
 
     /**
@@ -108,8 +89,7 @@ public class Episode {
     public String toString() {
         return new StringBuilder("Episode[")
                 .append("id=").append(id)
-                .append(",airdate='").append(airdate).append("'")
-                .append(",airtime='").append(airtime).append("'")
+                .append(",airstamp='").append(airstamp).append("'")
                 .append(",runtime=").append(runtime)
                 .append(",show=").append(show)
                 .append(']').toString();

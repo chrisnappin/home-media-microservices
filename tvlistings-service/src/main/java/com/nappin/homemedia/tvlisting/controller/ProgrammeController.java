@@ -1,7 +1,7 @@
 package com.nappin.homemedia.tvlisting.controller;
 
 import com.nappin.homemedia.tvlisting.model.APIError;
-import com.nappin.homemedia.tvlisting.model.Programme;
+import com.nappin.homemedia.tvlisting.model.Channel;
 import com.nappin.homemedia.tvlisting.service.ProgrammeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,11 +41,11 @@ public class ProgrammeController {
     @RequestMapping(method=GET, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value="Get all programmes for the current day")
     @ApiResponses(value={
-        @ApiResponse(code=200, message="Programmes successfully returned", response=Programme.class, responseContainer="List"),
+        @ApiResponse(code=200, message="Programmes successfully returned", response=Channel.class, responseContainer="List"),
         @ApiResponse(code=406, message="Unsupported media type", response=Void.class),
         @ApiResponse(code=500, message="Internal error", response=APIError.class)
         })
-    public ResponseEntity<List<Programme>> getProgrammes() {
+    public ResponseEntity<List<Channel>> getProgrammes() {
         return ResponseEntity.ok(programmeService.getProgrammes());
     }
 }

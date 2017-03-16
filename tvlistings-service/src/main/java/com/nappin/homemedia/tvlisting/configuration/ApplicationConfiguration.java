@@ -8,6 +8,7 @@ import com.nappin.homemedia.tvlisting.service.impl.FavouriteServiceImpl;
 import com.nappin.homemedia.tvlisting.service.impl.ProgrammeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.metrics.CounterService;
+import org.springframework.boot.actuate.metrics.GaugeService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -28,6 +29,9 @@ public class ApplicationConfiguration {
     @Autowired
     private CounterService counterService;
 
+    @Autowired
+    private GaugeService gaugeService;
+
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
@@ -45,7 +49,7 @@ public class ApplicationConfiguration {
 
     @Bean
     public ProgrammeListingDelegate programmeListingDelegate() {
-        return new TVMazeProgrammeListingDelegate(restTemplate());
+        return new TVMazeProgrammeListingDelegate(restTemplate(), gaugeService);
     }
 
     @Bean

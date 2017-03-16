@@ -1,6 +1,6 @@
 package com.nappin.homemedia.tvlisting.service;
 
-import com.nappin.homemedia.tvlisting.model.Programme;
+import com.nappin.homemedia.tvlisting.model.Channel;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ public interface ProgrammeService {
 
     /**
      * Get the programme listings for the current day.
-     * @return A List of Programmes, possibly empty.
+     * @return A List of Channels with programme listings, possibly empty.
      */
-    List<Programme> getProgrammes();
+    List<Channel> getProgrammes();
 }

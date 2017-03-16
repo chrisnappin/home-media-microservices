@@ -1,7 +1,7 @@
 package com.nappin.homemedia.tvlisting.service.impl;
 
 import com.nappin.homemedia.tvlisting.delegate.ProgrammeListingDelegate;
-import com.nappin.homemedia.tvlisting.model.Programme;
+import com.nappin.homemedia.tvlisting.model.Channel;
 import com.nappin.homemedia.tvlisting.service.ProgrammeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,10 +37,10 @@ public class ProgrammeServiceImpl implements ProgrammeService {
 
     /**
      * Get the programmes for the current day.
-     * @return A List of programmes, possibly empty.
+     * @return A List of channels with programme listings, possibly empty.
      */
     @Override
-    public List<Programme> getProgrammes() {
+    public List<Channel> getProgrammes() {
         logger.debug("In getProgrammes");
         counterService.increment(GET_PROGRAMMES);
 

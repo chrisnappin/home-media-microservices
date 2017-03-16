@@ -1,6 +1,6 @@
 package com.nappin.homemedia.tvlisting.delegate;
 
-import com.nappin.homemedia.tvlisting.model.Programme;
+import com.nappin.homemedia.tvlisting.model.Channel;
 
 import java.util.List;
 
@@ -11,7 +11,8 @@ public interface ProgrammeListingDelegate {
 
     /**
      * Get a programme listing for the current day.
-     * @return A List of Programmes
+     * @return A List of Channels with programme listings, possibly empty
+     * @throws ProgrammeListingException Error retrieving the programme listing
      */
-    List<Programme> getProgrammeListing();
+    List<Channel> getProgrammeListing() throws ProgrammeListingException;
 }

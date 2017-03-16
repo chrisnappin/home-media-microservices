@@ -1,7 +1,7 @@
 package com.nappin.homemedia.tvlisting.service.impl;
 
 import com.nappin.homemedia.tvlisting.delegate.ProgrammeListingDelegate;
-import com.nappin.homemedia.tvlisting.model.Programme;
+import com.nappin.homemedia.tvlisting.model.Channel;
 import com.nappin.homemedia.tvlisting.service.ProgrammeService;
 import org.junit.Test;
 import org.springframework.boot.actuate.metrics.CounterService;
@@ -27,11 +27,11 @@ public class ProgrammeServiceImplTest {
         ProgrammeListingDelegate delegate = mock(ProgrammeListingDelegate.class);
         ProgrammeService service = new ProgrammeServiceImpl(counter, delegate);
 
-        List<Programme> result = new ArrayList<>();
-        result.add(new Programme("programme #1"));
+        List<Channel> result = new ArrayList<>();
+        result.add(new Channel(10L, "channel #1"));
         given(delegate.getProgrammeListing()).willReturn(result);
 
-        List<Programme> actual = service.getProgrammes();
+        List<Channel> actual = service.getProgrammes();
         assertEquals("Wrong results returned", result, actual);
     }
 }
