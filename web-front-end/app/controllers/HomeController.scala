@@ -12,13 +12,13 @@ import play.api.mvc.{Action, Controller}
 class HomeController @Inject() extends Controller {
 
   /** The logger to use. */
-  val logger: Logger = Logger(this.getClass())
+  val logger: Logger = Logger(this.getClass)
 
   /**
    * Renders the home page.
    */
   def index = Action { implicit request =>
-    Logger.debug("Rendering the home page")
+    logger.debug("Rendering the home page")
     Ok(views.html.index())
   }
 }

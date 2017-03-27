@@ -1,10 +1,17 @@
-@import model.Programme
+@import model.{Channel, Programme}
 
-@(programmes: Seq[Programme])
+@(channels: Seq[Channel])
 
 @main("Programme Listing") {
     <h1>Programme Listing</h1>
-    @for(programme <- programmes) {
-        <p>@programme.name</p>
+    @for(channel <- channels) {
+        <p>@channel.name (@channel.id)</p>
+        <ul>
+        @for(programme <- channel.listing) {
+            <li><p>@programme.name (@programme.programmeId) @programme.programmeType
+                @programme.startDateTime (for @programme.runningTime mins)
+            </li>
+        }
+        </ul>
     }
 }

@@ -7,8 +7,10 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.11.7"
 
-libraryDependencies += filters
-libraryDependencies += specs2 % Test
+libraryDependencies ++= Seq(
+  filters,
+  ws,
+  specs2 % Test)
 
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "com.nappin.homemedia.web.controllers._"
