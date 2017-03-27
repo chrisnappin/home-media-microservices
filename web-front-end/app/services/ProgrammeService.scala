@@ -4,7 +4,6 @@ import javax.inject.{Inject, Singleton}
 
 import com.google.inject.ImplementedBy
 import model.Channel
-import play.api.libs.json.{JsError, JsSuccess}
 import play.api.{Configuration, Logger}
 import play.api.libs.ws.{WSClient, WSRequest, WSResponse}
 

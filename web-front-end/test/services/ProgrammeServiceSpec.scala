@@ -109,23 +109,6 @@ class ProgrammeServiceSpec extends PlaySpecification with Mockito {
       val service = new ProgrammeServiceImpl(mockWS, configuration)
       await(service.getListing()) must throwAn[RuntimeException]
     }
-
-    // TODO: rethrow a JSON parsing error
-
-    /*
-    "show error message on timeout" in {
-      val mockProgrammeService = mock[ProgrammeService]
-
-      // thread must sleep for longer than timeout value...
-      mockProgrammeService.getListing() returns Future { Thread.sleep(1000L); Seq() }
-
-      val controller = new ProgrammeController(mockProgrammeService, actorSystem)
-      val listing = controller.list().apply(FakeRequest())
-
-      status(listing) must be equalTo INTERNAL_SERVER_ERROR
-      contentType(listing) must be equalTo Some("text/html")
-      contentAsString(listing) must contain("Programme Service did not respond")
-    }*/
   }
 
   /**

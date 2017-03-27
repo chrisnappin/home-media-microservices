@@ -4,7 +4,7 @@ import akka.pattern.after
 import javax.inject.{Inject, Singleton}
 
 import akka.actor.ActorSystem
-import model.{Channel, Programme}
+import model.{Channel}
 import play.api.Logger
 import play.api.mvc.{Action, Controller}
 import services.ProgrammeService
