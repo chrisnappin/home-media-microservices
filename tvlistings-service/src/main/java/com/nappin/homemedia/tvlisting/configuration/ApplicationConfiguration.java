@@ -1,12 +1,17 @@
 package com.nappin.homemedia.tvlisting.configuration;
 
+import com.nappin.homemedia.tvlisting.dao.ProgrammeDAO;
+import com.nappin.homemedia.tvlisting.dao.impl.ProgrammeDAOImpl;
 import com.nappin.homemedia.tvlisting.delegate.ProgrammeListingDelegate;
+import com.nappin.homemedia.tvlisting.delegate.tvmaze.StubProgrammeListingDelegate;
 import com.nappin.homemedia.tvlisting.delegate.tvmaze.TVMazeProgrammeListingDelegate;
+import com.nappin.homemedia.tvlisting.dao.impl.ListingRepository;
 import com.nappin.homemedia.tvlisting.service.FavouriteService;
 import com.nappin.homemedia.tvlisting.service.ProgrammeService;
 import com.nappin.homemedia.tvlisting.service.impl.FavouriteServiceImpl;
 import com.nappin.homemedia.tvlisting.service.impl.ProgrammeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.metrics.CounterService;
 import org.springframework.boot.actuate.metrics.GaugeService;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +37,23 @@ public class ApplicationConfiguration {
     @Autowired
     private GaugeService gaugeService;
 
+    // TODO: add explicit config for repository
+    //@Autowired
+    //private MongoDbFactory mongoDbFactory;
+
+    //@Bean
+    //public MongoTemplate mongoTemplate() {
+    //    return new MongoTemplate(mongoDbFactory);
+    //}
+
+    @Autowired
+    private ListingRepository listingRepository;
+
+    @Bean
+    public ProgrammeDAO programmeDAO() {
+        return new ProgrammeDAOImpl(listingRepository);
+    }
+
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
@@ -44,12 +66,19 @@ public class ApplicationConfiguration {
 
     @Bean
     public ProgrammeService programmeService() {
-        return new ProgrammeServiceImpl(counterService, programmeListingDelegate());
+        return new ProgrammeServiceImpl(counterService, programmeListingDelegate(), programmeDAO());
     }
+
+    @Value("${delegate.stub}")
+    private boolean useStubDelegate;
 
     @Bean
     public ProgrammeListingDelegate programmeListingDelegate() {
-        return new TVMazeProgrammeListingDelegate(restTemplate(), gaugeService);
+        if (useStubDelegate) {
+            return new StubProgrammeListingDelegate();
+        } else {
+            return new TVMazeProgrammeListingDelegate(restTemplate(), gaugeService);
+        }
     }
 
     @Bean

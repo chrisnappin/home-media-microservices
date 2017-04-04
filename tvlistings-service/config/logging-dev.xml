@@ -20,6 +20,7 @@
     <logger name="org.jboss" level="warn"/>
     <logger name="org.springframework" level="warn"/>
     <logger name="springfox.documentation" level="info"/>
+    <logger name="org.mongodb.driver.cluster" level="warn"/>
 
     <root level="ALL">
         <appender-ref ref="STDOUT" />
