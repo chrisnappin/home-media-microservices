@@ -10,6 +10,7 @@ import org.springframework.boot.actuate.metrics.CounterService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
@@ -32,7 +33,7 @@ public class ProgrammeServiceImplTest {
         ProgrammeService service = new ProgrammeServiceImpl(counter, delegate, dao);
 
         // if dao returns null then the delegate is invoked
-        given(dao.loadProgrammeListing(any(LocalDate.class))).willReturn(null);
+        given(dao.loadProgrammeListing(any(LocalDate.class))).willReturn(Optional.empty());
 
         List<Channel> result = new ArrayList<>();
         result.add(new Channel(10L, "channel #1"));

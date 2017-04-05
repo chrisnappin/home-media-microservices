@@ -4,6 +4,7 @@ import com.nappin.homemedia.tvlisting.model.Channel;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Encapsulates persistence of programme listings.
@@ -21,8 +22,8 @@ public interface ProgrammeDAO {
     /**
      * Loads a programme listing for the specified date.
      * @param date      The date of the listing
-     * @return The listing, or null if not found
+     * @return The listing, if any
      * @throws DAOException Error saving the programme listing
      */
-    List<Channel> loadProgrammeListing(LocalDate date) throws DAOException;
+    Optional<List<Channel>> loadProgrammeListing(LocalDate date) throws DAOException;
 }

@@ -12,6 +12,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Encapsulates persistence of programme listings.
@@ -59,7 +60,7 @@ public class ProgrammeDAOImpl implements ProgrammeDAO {
      * @throws DAOException Error saving the programme listing
      */
     @Override
-    public List<Channel> loadProgrammeListing(LocalDate date) throws DAOException {
+    public Optional<List<Channel>> loadProgrammeListing(LocalDate date) throws DAOException {
         logger.debug("In loadProgrammeListing...");
 
         ProgrammeListing listing = listingRepository.findByListingDate(date.format(dateFormatter));
@@ -107,9 +108,11 @@ public class ProgrammeDAOImpl implements ProgrammeDAO {
      * @param programmeListing  The DAO POJO
      * @return The model object equivalents
      */
-    private List<Channel> docToModel(ProgrammeListing programmeListing) {
+    private Optional<List<Channel>> docToModel(ProgrammeListing programmeListing) {
+        List<Channel> channels = null;
+
         if (programmeListing != null) {
-            List<Channel> channels = new ArrayList<>();
+            channels = new ArrayList<>();
             for (ChannelDoc channelDoc : programmeListing.getListing()) {
                 List<Programme> programmes = new ArrayList<>();
                 for (ProgrammeDoc programmeDoc : channelDoc.getListing()) {
@@ -121,10 +124,8 @@ public class ProgrammeDAOImpl implements ProgrammeDAO {
 
                 channels.add(new Channel(channelDoc.getId(), channelDoc.getName(), programmes));
             }
-
-            return channels;
-        } else {
-            return null;
         }
+
+        return Optional.ofNullable(channels);
     }
 }

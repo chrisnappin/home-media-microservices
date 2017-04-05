@@ -10,6 +10,7 @@ import org.springframework.boot.actuate.metrics.CounterService;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Handles retrieval of programme listings.
@@ -55,17 +56,22 @@ public class ProgrammeServiceImpl implements ProgrammeService {
         // check if programme listing already saved in the repository
         LocalDate today = LocalDate.now();
         logger.debug("Looking for listing covering date: {}", today);
-        List<Channel> listing = programmeDAO.loadProgrammeListing(today);
+        Optional<List<Channel>> listing = programmeDAO.loadProgrammeListing(today);
+        return listing.orElse(lookupAndCacheListing(today));
+    }
 
-        // if not found then load from external service, and save in DB
-        if (listing == null) {
-            logger.debug("No saved listing found, so calling external service");
-            listing = programmeListingDelegate.getProgrammeListing();
+    /**
+     * Lookup a programme listing for the specified day, and cache in the repository.
+     * @param date  The date of the listing
+     * @return The listing
+     */
+    private List<Channel> lookupAndCacheListing(LocalDate date) {
+        logger.debug("No saved listing found, so calling external service");
+        List<Channel> listing = programmeListingDelegate.getProgrammeListing();
 
-            // save the listing in the repository
-            programmeDAO.saveProgrammeListing(listing, today);
-            logger.debug("Listing saved in repository");
-        }
+        // save the listing in the repository
+        programmeDAO.saveProgrammeListing(listing, date);
+        logger.debug("Listing saved in repository");
 
         return listing;
     }

@@ -1,6 +1,5 @@
-package com.nappin.homemedia.tvlisting.model;
+package com.nappin.homemedia.tvlisting.dao.impl;
 
-import com.nappin.homemedia.tvlisting.dao.impl.ProgrammeListing;
 import org.junit.Test;
 
 import java.time.format.DateTimeParseException;
