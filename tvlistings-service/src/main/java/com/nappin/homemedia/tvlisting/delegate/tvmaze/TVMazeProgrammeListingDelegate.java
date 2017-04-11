@@ -4,6 +4,7 @@ import com.nappin.homemedia.tvlisting.delegate.ProgrammeListingDelegate;
 import com.nappin.homemedia.tvlisting.delegate.ProgrammeListingException;
 import com.nappin.homemedia.tvlisting.model.Channel;
 import com.nappin.homemedia.tvlisting.model.Programme;
+import com.nappin.homemedia.tvlisting.util.Timer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.actuate.metrics.GaugeService;
@@ -54,14 +55,19 @@ public class TVMazeProgrammeListingDelegate implements ProgrammeListingDelegate 
     @Override
     public List<Channel> getProgrammeListing() throws ProgrammeListingException {
         logger.debug("Querying TV Maze...");
+        Timer requestTimer = new Timer("TVMazeProgrammeListingDelegate.rest-request");
+        Timer unmarshallTimer = new Timer("TVMazeProgrammeListingDelegate.unmarshall");
         try {
             long start = System.currentTimeMillis();
+            requestTimer.start();
             Episode[] result =
                     restTemplate.getForObject("http://api.tvmaze.com/schedule?country={country}", Episode[].class, "GB");
+            requestTimer.stop();
             long end = System.currentTimeMillis();
             gaugeService.submit(TVMAZE_RESPONSE, end - start); // record how many milliseconds the GET took
             logger.debug("response received, {} episodes listed", result.length);
 
+            unmarshallTimer.start();
             Map<Long, Channel> channels = new HashMap<>();
             for (Episode episode : result) {
                 Show show = episode.getShow();
@@ -90,6 +96,7 @@ public class TVMazeProgrammeListingDelegate implements ProgrammeListingDelegate 
                 channel.getListing().add(new Programme(episode.getId(), show.getName(), show.getType(),
                         ZonedDateTime.parse(episode.getAirstamp(), ISO_OFFSET_DATE_TIME), episode.getRuntime(), show.getId()));
             }
+            unmarshallTimer.stop();
 
             return new ArrayList<>(channels.values());
 

@@ -3,6 +3,7 @@ package com.nappin.homemedia.tvlisting.controller;
 import com.nappin.homemedia.tvlisting.model.APIError;
 import com.nappin.homemedia.tvlisting.model.Channel;
 import com.nappin.homemedia.tvlisting.service.ProgrammeService;
+import com.nappin.homemedia.tvlisting.util.Timer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -46,6 +47,10 @@ public class ProgrammeController {
         @ApiResponse(code=500, message="Internal error", response=APIError.class)
         })
     public ResponseEntity<List<Channel>> getProgrammes() {
-        return ResponseEntity.ok(programmeService.getProgrammes());
+        Timer timer = new Timer("ProgrammeController.getProgrammes");
+        timer.start();
+        ResponseEntity<List<Channel>> result = ResponseEntity.ok(programmeService.getProgrammes());
+        timer.stop();
+        return result;
     }
 }

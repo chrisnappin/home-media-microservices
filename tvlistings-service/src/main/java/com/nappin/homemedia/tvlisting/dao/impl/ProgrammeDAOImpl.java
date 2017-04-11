@@ -4,6 +4,7 @@ import com.nappin.homemedia.tvlisting.dao.DAOException;
 import com.nappin.homemedia.tvlisting.dao.ProgrammeDAO;
 import com.nappin.homemedia.tvlisting.model.Channel;
 import com.nappin.homemedia.tvlisting.model.Programme;
+import com.nappin.homemedia.tvlisting.util.Timer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,10 +47,16 @@ public class ProgrammeDAOImpl implements ProgrammeDAO {
     @Override
     public void saveProgrammeListing(List<Channel> channels, LocalDate date) throws DAOException {
         logger.debug("In saveProgrammeListing...");
+        Timer insertTimer = new Timer("ProgrammeDAOImpl.insert");
+        Timer convertTimer = new Timer("ProgrammeDAOImpl.convert");
 
+        convertTimer.start();
         ProgrammeListing listing = modelToDoc(channels, date);
+        convertTimer.stop();
 
+        insertTimer.start();
         listingRepository.insert(listing);
+        insertTimer.stop();
     }
 
     /**
@@ -62,10 +69,17 @@ public class ProgrammeDAOImpl implements ProgrammeDAO {
     @Override
     public Optional<List<Channel>> loadProgrammeListing(LocalDate date) throws DAOException {
         logger.debug("In loadProgrammeListing...");
+        Timer findTimer = new Timer("ProgrammeDAOImpl.findByListingDate");
+        Timer convertTimer = new Timer("ProgrammeDAOImpl.convert");
 
+        findTimer.start();
         ProgrammeListing listing = listingRepository.findByListingDate(date.format(dateFormatter));
+        findTimer.stop();
 
-        return docToModel(listing);
+        convertTimer.start();
+        Optional<List<Channel>> result = docToModel(listing);
+        convertTimer.stop();
+        return result;
     }
 
     /**
@@ -112,6 +126,7 @@ public class ProgrammeDAOImpl implements ProgrammeDAO {
         List<Channel> channels = null;
 
         if (programmeListing != null) {
+            logger.debug("{} channel listings loaded", programmeListing.getListing().size());
             channels = new ArrayList<>();
             for (ChannelDoc channelDoc : programmeListing.getListing()) {
                 List<Programme> programmes = new ArrayList<>();
@@ -124,6 +139,8 @@ public class ProgrammeDAOImpl implements ProgrammeDAO {
 
                 channels.add(new Channel(channelDoc.getId(), channelDoc.getName(), programmes));
             }
+        } else {
+            logger.debug("No channel listing loaded");
         }
 
         return Optional.ofNullable(channels);

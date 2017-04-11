@@ -9,6 +9,7 @@
 
     <!-- the application log levels -->
     <logger name="com.nappin.homemedia.tvlisting" level="debug"/>
+    <logger name="com.nappin.homemedia.timer" level="trace"/>
 
     <!-- default log levels for application framework/libraries/embedded runtime -->
     <logger name="javax.activation" level="warn"/>
@@ -20,6 +21,7 @@
     <logger name="org.jboss" level="warn"/>
     <logger name="org.springframework" level="warn"/>
     <logger name="springfox.documentation" level="info"/>
+    <logger name="org.mongodb" level="info"/>
     <logger name="org.mongodb.driver.cluster" level="warn"/>
 
     <root level="ALL">

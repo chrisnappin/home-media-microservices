@@ -4,6 +4,7 @@ import com.nappin.homemedia.tvlisting.dao.ProgrammeDAO;
 import com.nappin.homemedia.tvlisting.delegate.ProgrammeListingDelegate;
 import com.nappin.homemedia.tvlisting.model.Channel;
 import com.nappin.homemedia.tvlisting.service.ProgrammeService;
+import com.nappin.homemedia.tvlisting.util.Timer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.actuate.metrics.CounterService;
@@ -52,12 +53,20 @@ public class ProgrammeServiceImpl implements ProgrammeService {
     public List<Channel> getProgrammes() {
         logger.debug("In getProgrammes");
         counterService.increment(GET_PROGRAMMES);
+        Timer timer = new Timer("ProgrammeServiceImpl.getProgrammes");
 
+        timer.start();
         // check if programme listing already saved in the repository
         LocalDate today = LocalDate.now();
         logger.debug("Looking for listing covering date: {}", today);
         Optional<List<Channel>> listing = programmeDAO.loadProgrammeListing(today);
-        return listing.orElse(lookupAndCacheListing(today));
+        timer.stop();
+
+        if (listing.isPresent()) {
+            return listing.get();
+        } else {
+            return lookupAndCacheListing(today);
+        }
     }
 
     /**
@@ -67,12 +76,15 @@ public class ProgrammeServiceImpl implements ProgrammeService {
      */
     private List<Channel> lookupAndCacheListing(LocalDate date) {
         logger.debug("No saved listing found, so calling external service");
+        Timer timer = new Timer("ProgrammeServiceImpl.lookupAndCacheListing");
+        timer.start();
         List<Channel> listing = programmeListingDelegate.getProgrammeListing();
 
         // save the listing in the repository
         programmeDAO.saveProgrammeListing(listing, date);
         logger.debug("Listing saved in repository");
 
+        timer.stop();
         return listing;
     }
 }
