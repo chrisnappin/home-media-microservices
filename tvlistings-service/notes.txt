@@ -47,3 +47,5 @@ Swagger
 - added Springfox which generates swagger docs from spring code - http://localhost:8080/rest-api-docs
 - added Springfox swagger UI - browse to http://localhost:8080/swagger-ui.html
 - configuration using Spring Java Config @Bean
+
+test.
